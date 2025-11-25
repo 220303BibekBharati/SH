@@ -1,0 +1,65 @@
+:root{
+  --admin-accent:#4f46e5;
+  --admin-accent-2:#2563eb;
+}
+.breadcrumbs{
+  background: #0f172a;
+  color:#e5e7eb;
+}
+.breadcrumbs a{color:#c7d2fe}
+#content h1{
+  letter-spacing:.3px;
+}
+.submit-row input.default{
+  background: linear-gradient(135deg, var(--admin-accent), var(--admin-accent-2));
+  border: none;
+}
+.submit-row input.default:hover{
+  filter: brightness(.95);
+}
+#changelist-filter{
+  border-radius:12px;
+}
+#changelist .results table{
+  border-radius:10px;
+  overflow:hidden;
+}
+tr.row1:hover, tr.row2:hover{
+  background: #f8fafc;
+}
+.badge-paid{
+  background:#10b981; color:white; padding:2px 8px; border-radius:999px; font-size:12px;
+}
+.badge-unpaid{
+  background:#ef4444; color:white; padding:2px 8px; border-radius:999px; font-size:12px;
+}
+/* Order status badges */
+.badge-pending{
+  background:#f59e0b; color:white; padding:2px 8px; border-radius:999px; font-size:12px;
+}
+.badge-processing{
+  background:#3b82f6; color:white; padding:2px 8px; border-radius:999px; font-size:12px;
+}
+.badge-shipped{
+  background:#8b5cf6; color:white; padding:2px 8px; border-radius:999px; font-size:12px;
+}
+.badge-delivered{
+  background:#10b981; color:white; padding:2px 8px; border-radius:999px; font-size:12px;
+}
+.badge-canceled{
+  background:#ef4444; color:white; padding:2px 8px; border-radius:999px; font-size:12px;
+}
+
+/* Dashboard */
+.dashboard-cards{
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; margin-bottom:20px;
+}
+.dash-card{
+  border:1px solid #e5e7eb; border-radius:12px; padding:16px; background:#fff; box-shadow:0 8px 20px rgba(0,0,0,.04);
+}
+.dash-table{
+  width:100%; border-radius:12px; overflow:hidden; border:1px solid #e5e7eb;
+}
+.dash-table thead th{ background:#f8fafc; }
+.dash-actions{ margin-top:12px; }
+.empty-row{ text-align:center; color:#6b7280; }

@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - E-Commerce{% endblock %}
+
+{% block content %}
+<section class="hero-section text-white" id="home">
+    <div class="container text-center">
+        <h1 class="display-4 mb-3">Discover Your Next Favorite Product</h1>
+        <p class="lead mb-4">Curated electronics, fashion, accessories, and home essentials in one beautiful store.</p>
+        <a href="{% url 'products:product_list' %}" class="btn btn-light btn-lg me-2">Shop Now</a>
+        <a href="{% url 'core:about' %}" class="btn btn-outline-light btn-lg">Learn More</a>
+    </div>
+</section>
+
+<section class="container my-5" id="featured">
+    <h2 class="text-center mb-4">Featured Products</h2>
+    <div class="row">
+        {% for product in featured_products %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+                    {% else %}
+                        {% if product.category.slug == 'electronics' %}
+                            <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=900&q=80" class="card-img-top" alt="Electronics">
+                        {% elif product.category.slug == 'clothing' %}
+                            <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=900&q=80" class="card-img-top" alt="Clothing">
+                        {% elif product.category.slug == 'accessories' %}
+                            <img src="https://images.unsplash.com/photo-1528701800489-20be3c30c1d5?auto=format&fit=crop&w=900&q=80" class="card-img-top" alt="Accessories">
+                        {% elif product.category.slug == 'home-kitchen' %}
+                            <img src="https://images.unsplash.com/photo-1505691723518-36a5ac3be353?auto=format&fit=crop&w=900&q=80" class="card-img-top" alt="Home and kitchen">
+                        {% else %}
+                            <img src="https://images.unsplash.com/photo-1514996937319-344454492b37?auto=format&fit=crop&w=900&q=80" class="card-img-top" alt="Product">
+                        {% endif %}
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p class="card-text">{{ product.description|truncatechars:100 }}</p>
+                        <p class="card-text"><strong>NPR {{ product.price }}</strong></p>
+                        <a href="{{ product.get_absolute_url }}" class="btn btn-primary">View Details</a>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <p class="text-center">No featured products yet. Start by adding some products.</p>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="container my-5" id="categories">
+    <h2 class="text-center mb-4">Shop by Category</h2>
+    <div class="row justify-content-center">
+        {% for category in categories %}
+            <div class="col-6 col-md-3 mb-3">
+                <a href="{{ category.get_absolute_url }}" class="text-decoration-none text-dark">
+                    <div class="card text-center py-3 h-100">
+                        <div class="card-body">
+                            <h5 class="card-title mb-1">{{ category.name }}</h5>
+                            <p class="small text-muted mb-0">Browse {{ category.products.count }} items</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        {% empty %}
+            <p class="text-center">No categories available yet.</p>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="container my-5" id="about">
+    <div class="row align-items-center">
+        <div class="col-md-6 mb-3 mb-md-0">
+            <h2>Why shop with us?</h2>
+            <p class="text-muted">We combine a curated catalog with a smooth checkout experience so you can focus on what matters: getting great products at great prices.</p>
+            <ul class="list-unstyled">
+                <li>• Fast and secure checkout</li>
+                <li>• Carefully selected product catalog</li>
+                <li>• Order history and tracking</li>
+            </ul>
+        </div>
+        <div class="col-md-6 text-center">
+            <a href="{% url 'products:product_list' %}" class="btn btn-primary btn-lg">Start Shopping</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,31 @@
+# Fly.io app configuration
+# Change the app name after `flyctl launch` if needed
+app = "ecommerce-django-app"
+primary_region = "ams"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  PORT = "8080"
+  # Ensure Django sees correct hosts in production (override with `flyctl secrets set` if needed)
+  ALLOWED_HOSTS = "ecommerce-django-app.fly.dev"
+  DEBUG = "False"
+  DB_PATH = "/data/db.sqlite3"
+  MEDIA_ROOT = "/data/media"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ["app"]
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "256mb"
+
+[mounts]
+  source = "ecommerce_data"
+  destination = "/data"

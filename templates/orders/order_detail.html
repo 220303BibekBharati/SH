@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block title %}Order #{{ order.id }} - E-Commerce{% endblock %}
+
+{% block content %}
+<script>
+  setTimeout(function(){ location.reload(); }, 10000);
+  </script>
+<section class="order-detail">
+  <div class="hero-section rounded-4 mb-4">
+    <div class="container">
+      <h1 class="mb-1">Order #{{ order.id }}</h1>
+      <div class="d-flex gap-2 align-items-center">
+        {% if order.status %}
+          <span class="badge-status {{ 'badge-'|add:order.status }}">{{ order.get_status_display }}</span>
+        {% endif %}
+        {% if order.paid %}
+          <span class="badge-paid">PAID</span>
+        {% else %}
+          <span class="badge-unpaid">UNPAID</span>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="order-grid">
+    <div class="card">
+      <div class="card-body p-4">
+        <h3 class="h5 mb-3">Shipping & Contact</h3>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div class="text-muted small">Placed on</div>
+            <div class="fw-semibold">{{ order.created|date:'M d, Y H:i' }}</div>
+          </div>
+          <div class="col-md-6">
+            <div class="text-muted small">Name</div>
+            <div class="fw-semibold">{{ order.first_name }} {{ order.last_name }}</div>
+          </div>
+          <div class="col-md-6">
+            <div class="text-muted small">Email</div>
+            <div class="fw-semibold">{{ order.email }}</div>
+          </div>
+          <div class="col-md-6">
+            <div class="text-muted small">Address</div>
+            <div class="fw-semibold">{{ order.address }}, {{ order.postal_code }} {{ order.city }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body p-0">
+        <div class="px-4 pt-4 pb-2 border-bottom">
+          <h3 class="h5 mb-0">Items</h3>
+        </div>
+        <div class="table-responsive">
+          <table class="table align-middle mb-0">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th class="text-center">Qty</th>
+                <th class="text-end">Price</th>
+                <th class="text-end">Subtotal</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in order.items.all %}
+              <tr>
+                <td class="fw-semibold text-truncate" style="max-width: 320px;">{{ item.product.name }}</td>
+                <td class="text-center">{{ item.quantity }}</td>
+                <td class="text-end">NPR {{ item.price }}</td>
+                <td class="text-end">NPR {{ item.get_cost }}</td>
+              </tr>
+              {% empty %}
+              <tr><td colspan="4" class="text-center">No items in this order.</td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <div class="d-flex justify-content-between align-items-center p-4 border-top">
+          <div class="fw-semibold">Total</div>
+          <div class="fs-5 fw-bold">NPR {{ order.get_total_cost }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-between align-items-center mt-3">
+    <a href="{% url 'orders:order_history' %}" class="btn btn-outline-secondary">Back to Order History</a>
+  </div>
+</section>
+{% endblock %}

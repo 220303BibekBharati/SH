@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Shopping Cart{% endblock %}
+
+{% block content %}
+<h1>Shopping Cart</h1>
+{% if cart.items.all %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price (NPR)</th>
+                <th>Total (NPR)</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in cart.items.all %}
+                <tr>
+                    <td>{{ item.product.name }}</td>
+                    <td>
+                        <form method="post" action="{% url 'cart:update_cart' item.id %}">
+                            {% csrf_token %}
+                            <input type="number" name="quantity" value="{{ item.quantity }}" min="1" class="form-control d-inline-block" style="width: 80px;">
+                            <button type="submit" class="btn btn-sm btn-primary">Update</button>
+                        </form>
+                    </td>
+                    <td>NPR {{ item.product.price }}</td>
+                    <td>NPR {{ item.get_cost }}</td>
+                    <td><a href="{% url 'cart:remove_from_cart' item.id %}" class="btn btn-danger btn-sm">Remove</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <h3>Total: NPR {{ cart.get_total_price }}</h3>
+    <a href="{% url 'orders:order_create' %}" class="btn btn-success">Proceed to Checkout</a>
+{% else %}
+    <p>Your cart is empty.</p>
+    <a href="{% url 'products:product_list' %}" class="btn btn-primary">Continue Shopping</a>
+{% endif %}
+{% endblock %}

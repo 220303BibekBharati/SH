@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Order History{% endblock %}
+
+{% block content %}
+<script>
+  setTimeout(function(){ location.reload(); }, 10000);
+</script>
+<section class="orders-history">
+  <div class="hero-section rounded-4 mb-4">
+    <div class="container">
+      <h1 class="mb-1">Your Orders</h1>
+      <p class="mb-0">Track your recent purchases and their status.</p>
+    </div>
+  </div>
+
+  {% if orders %}
+  <div class="grid-auto-fit">
+    {% for order in orders %}
+    <a href="{% url 'orders:order_detail' order.id %}" class="card order-card text-reset text-decoration-none">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-start mb-1">
+          <h5 class="mb-0">Order #{{ order.id }}</h5>
+          {% if order.status %}
+            <span class="badge-status {{ 'badge-'|add:order.status }}">{{ order.get_status_display }}</span>
+          {% endif %}
+        </div>
+        <div class="text-muted small">Placed {{ order.created|date:'M d, Y H:i' }}</div>
+        <div class="d-flex justify-content-between align-items-center mt-2">
+          <div class="small text-muted">Items: {{ order.items.count }}</div>
+          <div class="fw-semibold">Total: ${{ order.get_total_cost }}</div>
+        </div>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+  {% else %}
+    <p>You have no orders yet.</p>
+  {% endif %}
+</section>
+{% endblock %}

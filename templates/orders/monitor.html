@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Orders Monitor{% endblock %}
+{% block content %}
+<main class="container">
+  <div class="hero-section rounded-4 mb-4">
+    <div class="container">
+      <h1 class="mb-2">Realtime Orders Monitor</h1>
+      <p class="mb-0">New orders will appear here instantly. Keep this page open.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="h4 mb-0">Incoming orders</h2>
+        <span class="badge text-bg-secondary" id="status-badge">Disconnected</span>
+      </div>
+      <div class="table-responsive">
+        <table class="table align-middle">
+          <thead>
+            <tr>
+              <th scope="col">Order ID</th>
+              <th scope="col">User ID</th>
+              <th scope="col">Total</th>
+              <th scope="col">Created</th>
+            </tr>
+          </thead>
+          <tbody id="orders-body">
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+(function() {
+  const statusBadge = document.getElementById('status-badge');
+  const tbody = document.getElementById('orders-body');
+  const protocol = (window.location.protocol === 'https:') ? 'wss://' : 'ws://';
+  const wsUrl = protocol + window.location.host + '/ws/orders/';
+
+  function setStatus(text, klass) {
+    statusBadge.textContent = text;
+    statusBadge.className = 'badge ' + klass;
+  }
+
+  function appendRow(evt) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><a href="/orders/${evt.order_id}/">#${evt.order_id}</a></td>
+      <td>${evt.user_id ?? ''}</td>
+      <td>₹ ${evt.total}</td>
+      <td>${new Date(evt.created).toLocaleString()}</td>
+    `;
+    tbody.prepend(tr);
+  }
+
+  let socket = null;
+  function connect() {
+    socket = new WebSocket(wsUrl);
+
+    socket.onopen = function() {
+      setStatus('Connected', 'text-bg-success');
+    };
+
+    socket.onmessage = function(event) {
+      try {
+        const data = JSON.parse(event.data);
+        if (data.type === 'order_created') {
+          appendRow(data);
+        }
+      } catch (e) {
+        console.warn('Non-JSON message', event.data);
+      }
+    };
+
+    socket.onclose = function() {
+      setStatus('Disconnected - retrying…', 'text-bg-warning');
+      setTimeout(connect, 1500);
+    };
+
+    socket.onerror = function() {
+      setStatus('Error', 'text-bg-danger');
+    };
+  }
+
+  connect();
+})();
+</script>
+{% endblock %}

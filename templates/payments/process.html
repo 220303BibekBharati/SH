@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}Payment{% endblock %}
+
+{% block content %}
+<section class="checkout">
+  <div class="checkout-header hero-section rounded-4 mb-4">
+    <div class="container">
+      <h1 class="mb-1">Payment</h1>
+      <p class="mb-0">Choose a payment method to confirm your order.</p>
+    </div>
+  </div>
+
+  <div class="checkout-grid">
+    <div class="card">
+      <div class="card-body p-4">
+        <h3 class="h5 mb-3">Order Total</h3>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <div class="text-muted">Total payable</div>
+          <div class="fs-5 fw-bold">${{ order.get_total_cost }}</div>
+        </div>
+
+        <form method="post" class="checkout-form-inner">
+          {% csrf_token %}
+
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Payment Method</label>
+            <div class="list-group">
+              <label class="list-group-item d-flex gap-3 align-items-center">
+                <input class="form-check-input" type="radio" name="payment_method" value="online" required>
+                <div>
+                  <div class="fw-semibold">Online Payment</div>
+                  <small class="text-muted">Pay now using online gateway. Order confirmed immediately.</small>
+                </div>
+              </label>
+              <label class="list-group-item d-flex gap-3 align-items-center">
+                <input class="form-check-input" type="radio" name="payment_method" value="cod" required>
+                <div>
+                  <div class="fw-semibold">Cash on Delivery (COD)</div>
+                  <small class="text-muted">Pay when your order arrives. Order placed now.</small>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <div class="d-grid d-md-flex gap-2">
+            <a href="/orders/create/" class="btn btn-outline-secondary">Back to Checkout</a>
+            <button type="submit" class="btn btn-primary">Confirm Order</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

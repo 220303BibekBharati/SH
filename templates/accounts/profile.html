@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+<section class="hero-section rounded-4 mb-4">
+  <div class="container">
+    <h1 class="mb-1">Your Profile</h1>
+    <p class="mb-0">Manage your personal details and preferences.</p>
+  </div>
+</section>
+
+<div class="container">
+  <div class="profile-card card mx-auto">
+    <div class="card-body p-4">
+      <h3 class="h5 mb-3">Account Details</h3>
+      <form method="post" class="profile-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="d-grid d-sm-flex gap-2 mt-3">
+          <a href="/" class="btn btn-outline-secondary">Cancel</a>
+          <button type="submit" class="btn btn-primary">Update Profile</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
