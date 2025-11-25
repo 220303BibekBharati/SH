@@ -12,8 +12,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 RUN sed -i 's/\r$//' entrypoint.sh && chmod +x entrypoint.sh
 RUN python manage.py collectstatic --noinput || true
-RUN useradd -m appuser && chown -R appuser:appuser /app
-USER appuser
 ENV PORT=8080
 EXPOSE 8080
 CMD ["/bin/bash", "-lc", "./entrypoint.sh"]
