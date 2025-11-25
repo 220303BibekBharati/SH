@@ -1,31 +1,33 @@
-# Fly.io app configuration
-# Change the app name after `flyctl launch` if needed
-app = "ecommerce-django-app"
-primary_region = "ams"
+# fly.toml app configuration file generated for ecommerce-django-app-bold-flower-5244 on 2025-11-25T14:40:40+05:45
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'ecommerce-django-app-bold-flower-5244'
+primary_region = 'ams'
 
 [build]
-  dockerfile = "Dockerfile"
+  dockerfile = 'Dockerfile'
 
 [env]
-  PORT = "8080"
-  # Ensure Django sees correct hosts in production (override with `flyctl secrets set` if needed)
-  ALLOWED_HOSTS = "ecommerce-django-app.fly.dev"
-  DEBUG = "False"
-  DB_PATH = "/data/db.sqlite3"
-  MEDIA_ROOT = "/data/media"
+  ALLOWED_HOSTS = 'ecommerce-django-app-bold-flower-5244.fly.dev'
+  DB_PATH = '/data/db.sqlite3'
+  DEBUG = 'False'
+  MEDIA_ROOT = '/data/media'
+  PORT = '8080'
+  CSRF_TRUSTED_ORIGINS = 'https://ecommerce-django-app-bold-flower-5244.fly.dev'
+
+[[mounts]]
+  source = 'ecommerce_data'
+  destination = '/data'
 
 [http_service]
   internal_port = 8080
   force_https = true
-  auto_stop_machines = true
+  auto_stop_machines = 'stop'
   auto_start_machines = true
   min_machines_running = 0
-  processes = ["app"]
+  processes = ['app']
 
 [[vm]]
-  size = "shared-cpu-1x"
-  memory = "256mb"
-
-[mounts]
-  source = "ecommerce_data"
-  destination = "/data"
+  size = 'shared-cpu-1x'

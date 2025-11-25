@@ -10,6 +10,16 @@ class UserRegistrationForm(UserCreationForm):
         model = User
         fields = ['username', 'email', 'password1', 'password2']
 
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.email = self.cleaned_data.get('email')
+        # Explicitly ensure regular site registrations are NOT staff or superusers
+        user.is_staff = False
+        user.is_superuser = False
+        if commit:
+            user.save()
+        return user
+
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = Profile

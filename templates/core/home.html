@@ -20,6 +20,8 @@
                 <div class="card h-100">
                     {% if product.image %}
                         <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+                    {% elif product.image_url %}
+                        <img src="{{ product.image_url }}" class="card-img-top" alt="{{ product.name }}">
                     {% else %}
                         {% if product.category.slug == 'electronics' %}
                             <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=900&q=80" class="card-img-top" alt="Electronics">

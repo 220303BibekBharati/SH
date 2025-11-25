@@ -21,7 +21,13 @@
         <div class="col-md-6 col-lg-4 mb-4">
             <div class="product-card">
                 <div class="product-image">
-                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                    {% elif product.image_url %}
+                        <img src="{{ product.image_url }}" alt="{{ product.name }}">
+                    {% else %}
+                        <img src="https://images.unsplash.com/photo-1514996937319-344454492b37?auto=format&fit=crop&w=900&q=80" alt="{{ product.name }}">
+                    {% endif %}
                     <span class="product-badge">New</span>
                 </div>
                 <div class="product-info">
